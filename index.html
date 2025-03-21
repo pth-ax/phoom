@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หน้าแรก</title>
+  <style>
+    /* พื้นหลังสีชมพูแบบ gradient */
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffc0cb, #ffb6c1);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    /* กรอบ container ขนาดเล็กและมินิมอล */
+    .container {
+      background: #fff0f5;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px dashed #ff69b4;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 10px;
+      color: #333;
+      font-size: 20px;
+    }
+    p.subtitle {
+      margin-bottom: 20px;
+      color: #555;
+      font-size: 14px;
+    }
+    .otp-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .otp-input {
+      width: 50px;
+      height: 50px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    .otp-input:focus {
+      border-color: #ff69b4;
+      box-shadow: 0 0 6px rgba(255, 105, 180, 0.6);
+    }
+    .error-message {
+      color: #e74c3c;
+      font-size: 12px;
+      margin-top: 10px;
+      height: 16px;
+    }
+    /* Responsive adjustments สำหรับหน้าจอเล็ก (iPhone) */
+    @media screen and (max-width: 480px) {
+      .container {
+        padding: 15px;
+        max-width: 280px;
+      }
+      h1 {
+        font-size: 18px;
+      }
+      p.subtitle {
+        font-size: 12px;
+      }
+      .otp-input {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ใส่ชื่อเล่น</h1>
+    <p class="subtitle">ภาษาอังกฤษ</p>
+    <div class="otp-container">
+      <input type="text" id="otp1" class="otp-input" maxlength="1" />
+      <input type="text" id="otp2" class="otp-input" maxlength="1" />
+      <input type="text" id="otp3" class="otp-input" maxlength="1" />
+      <input type="text" id="otp4" class="otp-input" maxlength="1" />
+    </div>
+    <div id="error" class="error-message"></div>
+  </div>
+  
+  <script>
+    const inputs = document.querySelectorAll('.otp-input');
+    const errorDiv = document.getElementById('error');
+
+    // ตรวจสอบค่าที่กรอกในช่อง
+    function checkOTP() {
+      const value = Array.from(inputs).map(input => input.value).join('');
+      if (value.length === inputs.length) {
+        if (value === "Noey") {
+          window.location.href = "nextpage.html?nickname=" + encodeURIComponent(value);
+        } else {
+          errorDiv.innerText = "กรอกคำว่า'Noey' N ตัวใหญ่";
+        }
+      }
+    }
+    
+    inputs.forEach((input, index) => {
+      input.addEventListener('input', function(e) {
+        errorDiv.innerText = ""; // เคลียร์ข้อความแจ้งเตือน
+        if (e.target.value.length > 0 && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+        checkOTP();
+      });
+      
+      input.addEventListener('keydown', function(e) {
+        if (e.key === "Backspace" && input.value === "" && index > 0) {
+          inputs[index - 1].focus();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
